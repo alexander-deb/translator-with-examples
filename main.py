@@ -1,5 +1,4 @@
 import os
-import requests
 import shelve
 import telebot
 
@@ -17,6 +16,7 @@ from_language - allows you to choose the language, you want to translate from
 into_language - allows you to choose the language, you want to translate into
 exchange - excanges language from and language into
 '''
+
 
 @bot.message_handler(commands=['start'])
 def start(message):

@@ -1,6 +1,5 @@
 import requests
 import shelve
-import telegram
 
 from bs4 import BeautifulSoup
 
