@@ -109,7 +109,7 @@ def exchange(message):
     with shelve.open('assets/user_langs') as file:
         bot.send_message(
             chat_id=message.from_user.id,
-            text=f'Selected languages:\nFrom {}\nInto {}'.format(
+            text='Selected languages:\nFrom {}\nInto {}'.format(
                 file[str(message.from_user.id)][Globals.FIRST_LANG], file[str(
                     message.from_user.id)][Globals.SECOND_LANG]
             )
