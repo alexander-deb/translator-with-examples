@@ -3,7 +3,6 @@ import shelve
 import telebot
 
 from assets.globals import Globals
-from bs4 import BeautifulSoup
 from translate import translate_message
 
 

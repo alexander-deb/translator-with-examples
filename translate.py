@@ -18,7 +18,7 @@ def translate_message(bot, message, file):
     try:
         response = requests.get(URL, headers=headers)  # send request
         if response.status_code == 200:
-            #print(response.status_code, 'OK')
+            #  print(response.status_code, 'OK')
             pass
     except requests.exceptions.ConnectionError:
         bot.send_message(
