@@ -1,5 +1,4 @@
 import requests
-import shelve
 
 from bs4 import BeautifulSoup
 
@@ -14,7 +13,7 @@ def translate_message(bot, message, file):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:45.0) Gecko/20100101 Firefox/45.0'
     }
-    URL = f'https://context.reverso.net/translation/russian-english/задумался'
+    URL = f'https://context.reverso.net/translation/{first_language}-{second_language}/{message.text}'
 
     try:
         response = requests.get(URL, headers=headers)  # send request
