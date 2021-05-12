@@ -17,3 +17,4 @@ class Globals:
     TRASH = 2
     FIRST_LANG = 0
     SECOND_LANG = 1
+    max_message_len = 4096

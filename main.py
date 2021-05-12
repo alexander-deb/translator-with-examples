@@ -11,13 +11,14 @@ bot = telebot.TeleBot(TG_TOKEN)
 
 '''
 list of commands:
+help - help :)))
 from_language - allows you to choose the language, you want to translate from
 into_language - allows you to choose the language, you want to translate into
-exchange - excanges language from and language into
+exchange - exchanges language from and language into
 '''
 
 
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=['start', 'help'])
 def start(message):
     '''
     Function that starts bot and adds user to database
@@ -25,7 +26,7 @@ def start(message):
     bot.send_message(chat_id=message.chat.id,
                      text='Choose languages. Press /from_language and then /into_language.')
     with shelve.open('assets/user_langs') as file:
-        file[str(message.from_user.id)] = ['not choosen', 'not choosen']
+        file[str(message.from_user.id)] = ['not chosen', 'not chosen']
 
 
 @bot.callback_query_handler(func=lambda call: True)
@@ -33,19 +34,18 @@ def query_handler(call):
     '''
     Shows beautiful buttons
     '''
-    print(call.data[Globals.TRASH:])
     with shelve.open('assets/user_langs') as file:
         if Globals.flag:
             bot.answer_callback_query(
                 callback_query_id=call.id, text=f'You succesfully changed second language to {call.data}')
-            second_language = call.data[Globals.TRASH:]
+            second_language = call.data[Globals.TRASH:].lower()
 
             file[str(call.from_user.id)] = [
                 file[str(call.from_user.id)][Globals.FIRST_LANG], second_language]
         else:
             bot.answer_callback_query(
                 callback_query_id=call.id, text=f'You succesfully changed first language to {call.data}')
-            first_language = call.data[Globals.TRASH:]
+            first_language = call.data[Globals.TRASH:].lower()
             file[str(call.from_user.id)] = [
                 first_language, file[str(call.from_user.id)][Globals.SECOND_LANG]]
 
@@ -122,21 +122,26 @@ def send_message(message):
     Sends translations and examples to the user
     '''
     with shelve.open('assets/user_langs') as file:
-        if 'not choosen' not in file[str(message.from_user.id)]:
-            text = translate_message(bot, message, file)
+        if 'not chosen' not in file[str(message.from_user.id)]:
+            translation_text, example_text = translate_message(str(message.from_user.id), file, message.text)
             bot.send_message(
                 chat_id=message.from_user.id,
-                text=text,
+                text=example_text,
+                parse_mode="markdown"
+            )
+            bot.send_message(
+                chat_id=message.from_user.id,
+                text=translation_text,
                 parse_mode="markdown"
             )
         else:
-            if file[str(message.from_user.id)][Globals.FIRST_LANG] == 'not choosen':
+            if file[str(message.from_user.id)][Globals.FIRST_LANG] == 'not chosen':
                 text = 'Please, choose language you want to translate FROM. Press /from_language'
                 bot.send_message(
                     chat_id=message.from_user.id,
                     text=text
                 )
-            if file[str(message.from_user.id)][Globals.SECOND_LANG] == 'not choosen':
+            if file[str(message.from_user.id)][Globals.SECOND_LANG] == 'not chosen':
                 text = 'Please, choose language you want to translate INTO. Press /into_language'
                 bot.send_message(
                     chat_id=message.from_user.id,
