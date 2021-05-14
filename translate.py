@@ -1,8 +1,7 @@
 import requests
-import shelve
 
 from bs4 import BeautifulSoup
-from assets.globals import Globals
+
 
 def translate_message(id, file, mtext):
     '''
@@ -46,7 +45,6 @@ def translate_message(id, file, mtext):
         else:
             example = '*{}:*'.format(example_list[i])
 
-        
         example_text += example + '\n'
         i += 1
     return translation_text, example_text
